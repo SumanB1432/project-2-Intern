@@ -1,4 +1,5 @@
-const collegeModel = require("../models/collegeModel")
+const collegeModel = require("../models/collegeModel");
+const internModel = require("../models/internModel");
 
 const createCollege = async function (req, res) {
     try {
@@ -31,8 +32,44 @@ const createCollege = async function (req, res) {
 
 
     }
-    catch(err){
-        return res.status(500).send({status:false, mag:err.message})
+    catch (err) {
+        return res.status(500).send({ status: false, mag: err.message })
+
+    }
+}
+
+const getCollege = async function (req, res) {
+    try {
+        let data = req.query
+        let getName = data.collegeName
+        if (!getName) return res.status(400).send({ status: false, message: "You must enter your College Name" })
+        if (!getData.collegeName.trim().match(/^[a-zA-Z]+$/)) {
+            return res.status(400).send({ status: false, msg: "Enter a valid college name." })
+        }
+        let findCollege = await collegeModel.findOne({ name: getName.toLowerCase() })
+
+        if (!findCollege) { return res.status(404).send({ status: false, message: " college is not registered " }) }
+
+        let collegeId = findCollege._id
+
+        let findIntern = await internModel.find({ collegeId: collegeId, isDeleted: false }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
+
+        if (!Object.keys(findIntern).length) return res.status(404).send({ status: false, message: "No  intern registered with this college" })
+
+        return res.status(200).send({
+            status: true,
+            data: {
+                "name": findCollege.name,
+                "fullName": findCollege.fullName,
+                "logoLink": findCollege.logoLink,
+                "interns": findIntern
+            }
+        })
+
+
+    }
+    catch (err) {
+        return status(500).send({ status: true, msg: err.message })
 
     }
 }

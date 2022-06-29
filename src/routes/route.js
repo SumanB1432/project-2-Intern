@@ -9,7 +9,7 @@ router.post("/functionup/colleges",collegeController.createCollege)
 
 router.post("/functionup/interns",internController.createInterns)
 
-router.get("/functionup/collegeDetails", collegeController.getCollege);
+router.get("/functionup/collegeDetails", collegeController.getcollege);
 
 
 

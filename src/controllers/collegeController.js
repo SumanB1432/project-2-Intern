@@ -38,41 +38,67 @@ const createCollege = async function (req, res) {
     }
 }
 
-const getCollege = async function (req, res) {
+
+const getcollege = async function (req, res) {
+
     try {
-        let data = req.query
-        let getName = data.collegeName
-        if (!getName) return res.status(400).send({ status: false, message: "You must enter your College Name" })
-        if (!getData.collegeName.trim().match(/^[a-zA-Z]+$/)) {
+
+        const collegeName = req.query.collegeName
+        console.log(typeof (collegeName))
+
+        if (!collegeName) { return res.status(400).send({ msg: "plzz provide collegeName" }) }
+
+        if (!collegeName.trim().match(/^[a-zA-Z]+$/)) {
             return res.status(400).send({ status: false, msg: "Enter a valid college name." })
         }
-        let findCollege = await collegeModel.findOne({ name: getName.toLowerCase() })
 
-        if (!findCollege) { return res.status(404).send({ status: false, message: " college is not registered " }) }
 
-        let collegeId = findCollege._id
 
-        let findIntern = await internModel.find({ collegeId: collegeId, isDeleted: false }).select({ _id: 1, name: 1, email: 1, mobile: 1 })
+        const details = await internModel.find().populate("collegeId")
+        console.log("PRINT", details)
 
-        if (!Object.keys(findIntern).length) return res.status(404).send({ status: false, message: "No  intern registered with this college" })
+        const allinterns = details.map(x => { if (x.collegeId.name == collegeName.toLowerCase()) { return x } })
+        if (!allinterns[0]) { return res.status(404).send({ status: true, msg: "no data found" }) }
+        console.log("kuchbhi", allinterns)
 
-        return res.status(200).send({
-            status: true,
-            data: {
-                "name": findCollege.name,
-                "fullName": findCollege.fullName,
-                "logoLink": findCollege.logoLink,
-                "interns": findIntern
+
+
+        interns = []
+        for (i = 0; i < allinterns.length; i++) {
+
+            a = {
+                _id: allinterns[i]._id,
+                name: allinterns[i].name,
+                email: allinterns[i].email,
+                mobile: allinterns[i].mobile
             }
-        })
+
+            interns.push(a)
 
 
-    }
-    catch (err) {
-        return status(500).send({ status: true, msg: err.message })
+            console.log(interns)
 
-    }
+            let dataToFetch = {
+                name: allinterns[0].collegeId.name,
+                fullName: allinterns[0].collegeId.fullName,
+                logoLink: allinterns[0].collegeId.logoLink,
+                interns: interns
+
+            }
+            console.log(dataToFetch)
+
+
+            return res.status(200).send({ status: true, msg: dataToFetch })
+
+
+        }
+
+    } catch (err) { return res.status(500).send({ status: false, msg: err.message }) }
+
 }
 
+
+
+
 module.exports.createCollege = createCollege;
-module.exports.getCollege = getCollege;
+module.exports.getcollege = getcollege;

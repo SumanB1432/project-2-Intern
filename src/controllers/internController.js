@@ -19,7 +19,7 @@ const createInterns = async function (req, res) {
         let isRegisteredEmail = await internModel.find({ email: data.email });
         if (isRegisteredEmail.length) return res.status(400).send({ status: false, message: "email id already registered" });
         if (!data.mobile) return res.status(400).send({ status: false, message: "You must give mobile number" })
-        if (!data.mobile.trim().match()) {
+        if (!data.mobile.trim().match(/^[6-9]\d{9}$/)) {
             return res.status(400).send({ status: false, msg: "Enter a valid mobile number" })
         }
         let isRegisteredMobile = await internModel.find({ mobile: data.mobile });

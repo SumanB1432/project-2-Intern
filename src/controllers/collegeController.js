@@ -38,7 +38,7 @@ const createCollege = async function (req, res) {
         }
 
         if (typeof (data.fullName) != "string") {
-            return res.status(400).send({ status: false, msg: "firstName should be string" })
+            return res.status(400).send({ status: false, msg: "full Name should be string" })
         }
 
         if (!data.fullName.trim().match(/^[a-zA-Z,\-.\s]*$/)) {

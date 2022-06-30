@@ -7,7 +7,7 @@ const isValid = function (value) {
     if (typeof value === Number && value.trim().length === 0) return false
     return true
 }
-
+////////////////////////////////////////////////////-----CREATE COLLEGE-------//////////////////////////////////////////////////////////////////
 const createCollege = async function (req, res) {
     try {
         let data = req.body;
@@ -69,6 +69,7 @@ const createCollege = async function (req, res) {
     }
 }
 
+////////////////////////////////////////////////////-----GET COLLEGE DETAILS-------//////////////////////////////////////////////////////////////////
 
 const getcollege = async function (req, res) {
 

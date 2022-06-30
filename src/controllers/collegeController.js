@@ -18,7 +18,10 @@ const createCollege = async function (req, res) {
         if (!data.name) return res.status(400).send({ status: false, message: "You must enter name" })
 
         if (!isValid(data.name)) {
-            return res.status(400).send({ status: false, msg: "Please Enter college Name" })
+            return res.status(400).send({ status: false, msg: "name should not be empty" })
+        }
+        if (typeof (data.name) != "string") {
+            return res.status(400).send({ status: false, msg: "name should be string" })
         }
 
         if (!data.name.trim().match(/^[a-zA-Z]+$/)) {
@@ -31,7 +34,11 @@ const createCollege = async function (req, res) {
         if (!data.fullName) return res.status(400).send({ status: false, message: "You must enter full name" })
 
         if (!isValid(data.fullName)) {
-            return res.status(400).send({ status: false, msg: "Please Enter college fullName " })
+            return res.status(400).send({ status: false, msg: "full name should not be empty " })
+        }
+
+        if (typeof (data.fullName) != "string") {
+            return res.status(400).send({ status: false, msg: "firstName should be string" })
         }
 
         if (!data.fullName.trim().match(/^[a-zA-Z,\-.\s]*$/)) {
@@ -41,7 +48,11 @@ const createCollege = async function (req, res) {
         if (!data.logoLink) return res.status(400).send({ status: false, message: "You must enter logoLink" })
 
         if (!isValid(data.logoLink)) {
-            return res.status(400).send({ status: false, msg: "Please Enter logo Link" })
+            return res.status(400).send({ status: false, msg: "logo link should not be empty" })
+        }
+
+        if (typeof (data.logoLink) != "string") {
+            return res.status(400).send({ status: false, msg: "logo link should be string" })
         }
 
         if (!data.logoLink.trim().match(/^(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&//=]*)$/))
@@ -67,6 +78,10 @@ const getcollege = async function (req, res) {
         console.log(typeof (collegeName))
 
         if (!collegeName) { return res.status(400).send({ msg: "plzz provide collegeName" }) }
+
+        if (!isValid(collegeName)) {
+            return res.status(400).send({ status: false, msg: "College Name should not be empty " })
+        }
 
         if (!collegeName.trim().match(/^[a-zA-Z]+$/)) {
             return res.status(400).send({ status: false, msg: "Enter a valid college name." })

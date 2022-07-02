@@ -5,7 +5,7 @@ const route = require('./routes/route');
 const mongoose = require('mongoose');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 
 mongoose.connect("mongodb+srv://Suman-1432:Suman1432@cluster0.bkkfmpr.mongodb.net/group74Database", {
     useNewUrlParser: true
